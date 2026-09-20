@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSE 306 MMA Lab Quiz — 226 MCQ Exam Prep</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f1f5f9;--card:#fff;--ink:#0f172a;--muted:#64748b;--brand:#1d4ed8;--brand2:#1e40af;--ok:#15803d;--okbg:#dcfce7;--bad:#dc2626;--badbg:#fee2e2;--line:#e2e8f0}
+body{font-family:"Segoe UI",Inter,system-ui,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+header{background:linear-gradient(135deg,#0f172a,#1e40af);color:#fff;padding:28px 20px;text-align:center;position:sticky;top:0;z-index:50}
+header h1{font-size:clamp(20px,3vw,32px);letter-spacing:.3px}
+header p{opacity:.9;margin-top:6px;font-size:14px}
+.statsbar{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.stat{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);padding:8px 14px;border-radius:999px;font-size:13px;font-weight:600}
+.stat b{font-size:15px}
+.wrap{max-width:1100px;margin:0 auto;padding:18px 14px 80px}
+.traps{background:#fffbeb;border:1px solid #fcd34d;border-radius:12px;padding:14px 16px;margin:14px 0}
+.traps h3{font-size:15px;margin-bottom:8px}
+.traps ul{columns:2;gap:24px;font-size:13px;padding-left:18px}
+@media(max-width:700px){.traps ul{columns:1}}
+.controls{position:sticky;top:0;background:var(--bg);padding:10px 0;z-index:40;border-bottom:1px solid var(--line)}
+.searchrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+input[type=text]{flex:1;min-width:200px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:14px}
+button{cursor:pointer;border:none;border-radius:10px;padding:10px 14px;font-size:13px;font-weight:700}
+.btn{background:var(--brand);color:#fff}
+.btn:hover{background:var(--brand2)}
+.btn-ghost{background:#fff;border:1px solid var(--line);color:var(--ink)}
+.btn-ghost.active{background:#0f172a;color:#fff;border-color:#0f172a}
+.sections{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.sec-btn{background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-size:12.5px;font-weight:700}
+.sec-btn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+.sec-btn .count{opacity:.75;font-weight:600}
+.progress{height:8px;background:#e2e8f0;border-radius:999px;overflow:hidden;margin-top:10px}
+.progress>div{height:100%;background:linear-gradient(90deg,#22c55e,#16a34a);width:0%;transition:width .3s}
+.section-block{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:16px;overflow:hidden}
+.section-head{padding:14px 16px;background:#0f172a;color:#fff;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.section-head h2{font-size:16px}
+.section-head .meta{font-size:12px;opacity:.9}
+.q{padding:14px 16px;border-top:1px solid var(--line)}
+.q:first-of-type{border-top:none}
+.q-num{display:inline-block;background:#eef2ff;color:#3730a3;font-weight:800;font-size:12px;padding:3px 9px;border-radius:999px;margin-bottom:8px}
+.q-text{font-weight:700;font-size:15px;margin-bottom:10px}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;background:#f8fafc;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;display:flex;gap:10px;align-items:flex-start;transition:.15s}
+.opt:hover:not(:disabled){border-color:var(--brand);background:#eff6ff}
+.opt .k{font-weight:800;background:#0f172a;color:#fff;min-width:26px;height:26px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+.opt:disabled{cursor:default;opacity:1}
+.opt.correct{background:var(--okbg);border-color:var(--ok);color:#14532d}
+.opt.correct .k{background:var(--ok)}
+.opt.wrong{background:var(--badbg);border-color:var(--bad);color:#7f1d1d}
+.opt.wrong .k{background:var(--bad)}
+.opt.dim{opacity:.75}
+.explain{display:none;margin-top:10px;border-radius:10px;padding:10px 12px;font-size:13.5px}
+.explain.show{display:block}
+.explain.ok{background:#f0fdf4;border:1px solid #86efac}
+.explain.bad{background:#fef2f2;border:1px solid #fca5a5}
+.explain b{display:block;margin-bottom:4px}
+.q-foot{margin-top:8px;display:flex;gap:8px;align-items:center}
+.retry{font-size:12px;padding:6px 10px;background:#fff;border:1px solid var(--line);border-radius:8px}
+.badge{font-size:11px;font-weight:800;padding:4px 8px;border-radius:999px;display:none}
+.badge.ok{display:inline-block;background:var(--okbg);color:var(--ok);border:1px solid #86efac}
+.badge.bad{display:inline-block;background:var(--badbg);color:var(--bad);border:1px solid #fca5a5}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<header>
+<h1>CSE 306 — MMA Lab Quiz Master Note</h1>
+<p>Microprocessor & Microcontroller Sessional • MIST • 226 Unique Syllabus-Filtered MCQs • Practice with instant feedback</p>
+<div class="statsbar">
+<div class="stat">Attempted <b id="sAtt">0</b>/226</div>
+<div class="stat">Correct <b id="sCor">0</b></div>
+<div class="stat">Wrong <b id="sWro">0</b></div>
+<div class="stat">Accuracy <b id="sAcc">0%</b></div>
+<div class="stat">Score <b id="sScore">0%</b></div>
+</div>
+</header>
+
+<div class="wrap">
+<div class="traps">
+<h3>⚡ High-risk traps to memorize</h3>
+<ul>
+<li>8086: 16-bit CPU, 20-bit address bus, 1 MB.</li>
+<li>Physical = segment × 10H + offset.</li>
+<li>Variable shift/rotate count = CL only.</li>
+<li>TEST = AND for flags, no store; ZF=1 if zero.</li>
+<li>LOOP auto decrements CX, repeats while CX≠0.</li>
+<li>PUSH SP−2, POP SP+2.</li>
+<li>Byte MUL: AX=AL×src. Word MUL: DX:AX=AX×src.</li>
+<li>Byte DIV: AL=quot, AH=rem. Word DIV: AX=quot, DX=rem.</li>
+<li>Unsigned DIV: clear AH/DX. Signed: CBW/CWD.</li>
+<li>DOS: AH=1 in→AL, AH=2 out DL, AH=9 string DX + $.</li>
+<li>7-seg common-anode: 0 lights. LED common-cathode: 1 lights.</li>
+<li>Dot-matrix: A=green, B=red, C=columns, A+B=orange.</li>
+<li>LCD BF=1 busy → wait. Line1 80H, Line2 C0H.</li>
+<li>.STACK 100H = 256 bytes (hex trap).</li>
+</ul>
+</div>
+
+<div class="controls">
+<div class="searchrow">
+<input type="text" id="search" placeholder="Search questions… e.g. MUL, LCD, stack, physical address">
+<button class="btn" id="btnAll">All Sections</button>
+<button class="btn-ghost" id="btnWrong">Review Wrong</button>
+<button class="btn-ghost" id="btnReset">Reset All</button>
+</div>
+<div class="sections" id="secNav"></div>
+<div class="progress"><div id="pbar"></div></div>
+</div>
+
+<div id="list"></div>
+<footer>Made for CSE 306 exam prep • Click an option — green = correct, red = wrong + correct answer shown • Progress auto-saves in browser</footer>
+</div>
+
+<script>
+const SECTIONS=[
+{id:"A",title:"A. 8086 Architecture, Registers, Memory & Program Structure",range:[1,25]},
+{id:"B",title:"B. Number Syntax, Variables, Basic Instructions & DOS I/O",range:[26,50]},
+{id:"C",title:"C. Control Flow, CMP, Conditional Jumps & Loops",range:[51,70]},
+{id:"D",title:"D. Logical Ops, Bit Masks, Shift/Rotate & Binary/Hex I/O",range:[71,105]},
+{id:"E",title:"E. MUL/IMUL, DIV/IDIV & Decimal I/O",range:[106,130]},
+{id:"F",title:"F. Stack & Procedures",range:[131,148]},
+{id:"G",title:"G. Arrays & Addressing Modes",range:[149,170]},
+{id:"H1",title:"H1. MDA-8086 Trainer Kit",range:[171,180]},
+{id:"H2",title:"H2. LCD Interface with 8086",range:[181,206]},
+{id:"H3",title:"H3. 7-Segment Display & Discrete LEDs",range:[207,218]},
+{id:"H4",title:"H4. Dot-Matrix Interface",range:[219,226]},
+];
+const Q=[
+[1,"A","The 8086 is described in the slides as a:",["8-bit microprocessor","16-bit microprocessor","20-bit microprocessor","32-bit microprocessor"],1,"It can work on 16 bits at a time."],
+[2,"A","How wide is the 8086 address bus in the course slides?",["8 bits","16 bits","20 bits","32 bits"],2,"A 20-bit address bus can address 2^20 byte locations."],
+[3,"A","The maximum directly addressable memory implied by a 20-bit address bus is: [TRAP]",["64 KB","256 KB","1 MB","16 MB"],2,"2^20 bytes = 1,048,576 bytes = 1 MB."],
+[4,"A","Which pair are the two major functional units of the 8086 CPU?",["ALU and RAM","EU and BIU","CS and DS","AX and BX"],1,"EU = Execution Unit, BIU = Bus Interface Unit."],
+[5,"A","Which unit contains the ALU and performs arithmetic/logical operations?",["BIU","EU","ROM","Stack segment"],1,"EU contains ALU and works with general registers."],
+[6,"A","Which unit communicates between the EU and memory/I-O?",["BIU","ALU","Flag unit","Stack pointer"],0,"BIU handles bus communication with RAM and I/O."],
+[7,"A","Which sequence best matches instruction execution in the slides?",["Decode -> Fetch -> Execute","Fetch -> Execute -> Decode","Fetch -> Decode -> Execute","Execute -> Fetch -> Decode"],2,"Slides list Fetch, Decode, Execute in that order."],
+[8,"A","How many total 16-bit registers are counted in the introductory slide?",["8","12","14","16"],2,"4 data + 9 address + 1 flag = 14."],
+[9,"A","Which register is most directly associated with loop counting?",["AX","BX","CX","DX"],2,"CX is count register used by LOOP."],
+[10,"A","Which register is emphasized for multiplication, division and I/O?",["AX","BX","SI","BP"],0,"AX is accumulator for mul/div and I/O."],
+[11,"A","Which data register is also described as a base register?",["AX","BX","CX","DX"],1,"BX is Base Register."],
+[12,"A","Which data register is used with multiplication/division and output per register slide?",["AX only","BX","CX","DX"],3,"DX used for wider results/dividends and output."],
+[13,"A","Which list contains only segment registers?",["CS, DS, SS, ES","SP, BP, IP, SI","AX, BX, CX, DX","SI, DI, CS, IP"],0,"Four segment registers: CS, DS, SS, ES."],
+[14,"A","Which list contains the pointer registers shown in the slides?",["SP, BP, IP","SI, DI, IP","CS, DS, ES","AX, BX, CX"],0,"SP, BP and IP are pointer registers."],
+[15,"A","Which are the index registers?",["AX and BX","SI and DI","SP and BP","CS and DS"],1,"SI and DI = Source/Destination Index."],
+[16,"A","The 8086 physical address is formed by: [TRAP]",["segment + offset","segment x 10H + offset","offset x 10H + segment","segment x 100H + offset"],1,"Shift segment left 4 bits (x10H) then add offset."],
+[17,"A","What is the physical address of 1000H:0010H?",["10010H","10001H","10100H","00110H"],0,"1000H x10H=10000H +0010H=10010H."],
+[18,"A","Two different segment:offset pairs can refer to same physical address because:",["segments are 8-bit","segments can overlap","offset is always zero","BIU ignores segment values"],1,"Segmented addressing allows overlapping segments."],
+[19,"A","Which segment normally contains executable instructions?",["DS","SS","CS","ES"],2,"CS = Code Segment."],
+[20,"A","Which segment is used for stack data?",["CS","DS","SS","ES"],2,"SS = Stack Segment."],
+[21,"A","In the SMALL memory model used in the slides, the program has:",["many code and many data segments","one code and one data segment","one code and many data segments","many code and one data segment"],1,"SMALL = one code + one data, each up to 64KB."],
+[22,"A",".STACK 100H reserves how many bytes? [TRAP]",["100 bytes","128 bytes","256 bytes","512 bytes"],2,"100H hex = 256 decimal bytes."],
+[23,"A","What is the purpose of MAIN ENDP?",["Terminate DOS","Mark the end of the MAIN procedure","Initialize DS","Declare stack size"],1,"PROC/ENDP delimit procedure definition."],
+[24,"A","Why is END MAIN still needed after MAIN ENDP?",["It defines the data segment","It tells assembler source end and entry point symbol","It clears AX","It creates a far procedure"],1,"END MAIN marks end + entry; ENDP only closes procedure."],
+[25,"A","Which memory model allows many code segments but only one data segment?",["SMALL","MEDIUM","COMPACT","TINY"],1,"MEDIUM: code >64KB many segments, data <=64KB."],
+[26,"B","Which is a valid binary literal according to the slides?",["10110111","10110111b","0xB7","B710"],1,"Binary literals end with b."],
+[27,"B","Which hexadecimal literal is valid?",["DAh","0DAh","DA","hDA"],1,"Hex starting A-F must be prefixed by digit e.g. 0."],
+[28,"B","The literal 10110111 with no suffix is treated as:",["Binary","Hexadecimal","Decimal","ASCII"],2,"Without b or h, treated as decimal."],
+[29,"B","Which variable name is illegal?",["@1","AbC$?","?","1Var"],3,"Name cannot start with digit."],
+[30,"B","Assembly variable names in the slides are:",["Case-sensitive","Case-insensitive","Digits only","Required to begin with @"],1,"Naming slide states case-insensitive."],
+[31,"B","DB defines a:",["4-bit nibble","8-bit byte","16-bit word","32-bit double word"],1,"DB = Define Byte = 8 bits."],
+[32,"B","DW defines:",["8 bits","16 bits","32 bits","64 bits"],1,"DW = Define Word = 16 bits."],
+[33,"B","DD and DQ correspond to:",["16 and 32 bits","32 and 64 bits","64 and 128 bits","8 and 16 bits"],1,"DD=32 bits, DQ=64 bits."],
+[34,"B","Why is VAR DB 320 invalid in the slide?",["320 is negative","320 does not fit in an 8-bit byte","DB requires binary only","320 is a register name"],1,"Byte holds only 8-bit value; 320 too large."],
+[35,"B","Which instruction format is correct?",["Operand Opcode Comment","Opcode Operands ;Comment","Comment Operand Opcode","Opcode ;Operand only"],1,"Opcode, operands, then semicolon comment."],
+[36,"B","What does MOV DEST,SRC do?",["DEST = DEST + SRC","SRC = DEST","DEST = SRC","Swaps DEST and SRC"],2,"MOV copies source into destination."],
+[37,"B","Which MOV is illegal under the course restriction?",["MOV AH,DL","MOV var1,AL when var1 is DB","MOV var1,var2","MOV AX,var1 when var1 is DW"],2,"Both source and dest cannot be memory at same time."],
+[38,"B","Which MOV is illegal because of size mismatch?",["MOV AH,DL","MOV AX,BX","MOV CL,100000000000b","MOV AL,3"],2,"CL is 8-bit; that immediate does not fit."],
+[39,"B","Which XCHG form is illegal?",["XCHG AH,DL","XCHG var1,AL","XCHG AX,30","XCHG AX,BX"],2,"XCHG exchanges registers/memory, not immediate."],
+[40,"B","ADD AL,BH means:",["AL = BH","AL = AL + BH","BH = AL + BH","AL = AL - BH"],1,"ADD stores sum in destination."],
+[41,"B","SUB AL,BH means:",["AL = AL - BH","BH = BH - AL","AL = BH - AL","Only flags change"],0,"SUB subtracts source from dest, store in dest."],
+[42,"B","NEG AL performs:",["AL = AL + 1","AL = -AL","AL = 0","AL = NOT AL only"],1,"NEG = arithmetic negative (two's complement)."],
+[43,"B","INC AL is equivalent to:",["AL = AL + 1","AL = AL - 1","AL = 1","AL = AL + CF"],0,"INC increments by one."],
+[44,"B","For DOS single-character input with INT 21H, AH should contain:",["01H","02H","09H","4CH"],0,"AH=01H = single-char input."],
+[45,"B","After INT 21H with AH=1, the input character is returned in:",["AH","AL","DL","DX"],1,"Input char stored in AL."],
+[46,"B","For single-character output with INT 21H, the character must be placed in:",["AL","AH","DL","DH"],2,"AH=2 output, DL holds character."],
+[47,"B","For DOS string output in the slide, AH should be:",["1","2","9","10"],2,"AH=9 is string-output service."],
+[48,"B","A string printed by the shown AH=9 service must end with:",["NUL","CR","$","#"],2,"Strings stored as DB data terminated by $."],
+[49,"B","Before AH=9 string output, the string address is loaded into:",["AX using MOV","DX using LEA","CX using XCHG","SP using PUSH"],1,"LEA DX,STRING loads address into DX."],
+[50,"B","Why does the slide warn you to save a desired AL value before INT 21H? [TRAP]",["INT 21H always clears DS","AL may be changed by the DOS service","DX is always destroyed","SP becomes zero"],1,"AL can change after INT 21H."],
+[51,"C","Which instruction performs an unconditional transfer to a label?",["CMP","JMP","JE","LOOP"],1,"JMP transfers without testing condition."],
+[52,"C","CMP is mainly used to:",["Store a subtraction result","Update flags for a comparison","Swap operands","Push values"],1,"CMP updates flags without keeping result."],
+[53,"C","JE means:",["Jump if even","Jump if equal","Jump if error","Jump if empty"],1,"JE branches when equal."],
+[54,"C","JNE means:",["Jump if not equal","Jump if negative","Jump if no error","Jump if no carry"],0,"JNE branches when not equal."],
+[55,"C","Which jump means greater?",["JG","JL","JGE","JLE"],0,"JG = Jump if Greater."],
+[56,"C","Which jump means greater or equal?",["JG","JGE","JL","JLE"],1,"JGE = Jump if Greater or Equal."],
+[57,"C","Which jump means less?",["JG","JGE","JL","JLE"],2,"JL = Jump if Less."],
+[58,"C","Which jump means less or equal?",["JG","JGE","JL","JLE"],3,"JLE = Jump if Less or Equal."],
+[59,"C","JXCZ is used when:",["AX is zero","BX is zero","CX is zero","CF is zero"],2,"JXCZ checks whether CX is zero."],
+[60,"C","JC and JNC test which flag?",["Zero","Carry","Sign","Parity"],1,"JC if carry; JNC if no carry."],
+[61,"C","JO and JNO test:",["Overflow","Zero","Parity","Sign"],0,"JO/JNO = Overflow set/clear."],
+[62,"C","JP and JNP test:",["Pointer","Parity","Procedure","Page"],1,"JP/JNP branch on Parity flag."],
+[63,"C","JS and JNS test:",["Stack","Sign","Segment","Shift"],1,"JS/JNS branch on Sign flag."],
+[64,"C","The LOOP instruction uses which register automatically?",["AX","BX","CX","DX"],2,"LOOP uses CX as count."],
+[65,"C","What does LOOP do to CX each iteration?",["Increments it","Decrements it","Sets it to zero immediately","Rotates it"],1,"LOOP decrements CX, repeats while CX !=0."],
+[66,"C","If CX starts at 5 and loop body contains only LOOP TOP at end, body executes:",["4 times","5 times","6 times","Until CF becomes 0"],1,"Once per count value down to 1 = 5 times."],
+[67,"C","Why is the simple do-while translation guaranteed to execute its body at least once?",["CMP is before the body","The condition is checked after the body","CX begins at zero","JMP always exits"],1,"Do-while checks condition after body."],
+[68,"C","To imitate a normal for-loop that might execute zero times, condition should be checked:",["Only after INC","Before entering/executing the body","Only after LOOP","Never"],1,"Compare before body so it can skip."],
+[69,"C","In assembly implementation of logical AND (&&), first failed condition should usually: [TRAP]",["Still evaluate all code as true","Jump to the false/next branch","Set CF and continue true path","Call a procedure"],1,"Both must be true, so failure exits true path."],
+[70,"C","In assembly implementation of logical OR (||), a true first condition can usually:",["Immediately enter the true branch","Force evaluation to false","Clear all flags","Skip the true branch"],0,"Only one OR term needs true."],
+[71,"D","AND DEST,SRC performs:",["Bitwise AND and stores in DEST","Bitwise OR","Only flag checking with no stored result","Arithmetic addition"],0,"AND stores bitwise AND in dest."],
+[72,"D","OR is most useful for:",["Clearing selected bits","Setting selected bits","Dividing by 2","Comparing signed numbers"],1,"OR with 1 mask forces bits to 1."],
+[73,"D","AND with a 0 in a mask position will:",["Set that destination bit","Clear that destination bit","Toggle that bit","Rotate that bit"],1,"Any bit AND 0 = 0."],
+[74,"D","XOR with 1 on a selected bit will:",["Keep it unchanged","Clear it","Toggle it","Set CF only"],2,"XOR 1 complements that bit."],
+[75,"D","XOR with 0 on a bit will:",["Toggle it","Leave it unchanged","Always set it","Always clear it"],1,"X XOR 0 = X."],
+[76,"D","A common way to clear a register using only XOR is:",["XOR AL,1","XOR AL,AL","XOR AL,0FFH","XOR AL,32"],1,"Value XOR itself = zero."],
+[77,"D","TEST differs from AND mainly because TEST:",["Does not perform a bitwise AND","Does not store the AND result","Never changes flags","Requires only one operand"],1,"TEST computes AND for flags but does not store."],
+[78,"D","If TEST A,B produces an all-zero result, ZF becomes:",["0","1","Undefined","Equal to CF"],1,"ZF set when result zero."],
+[79,"D","To test whether AL is odd, the course uses:",["TEST AL,1","TEST AL,2","OR AL,1","SHR AL,8"],0,"LSB determines odd/even."],
+[80,"D","After TEST AL,1, JZ EVEN is taken when:",["LSB=1","LSB=0","CF=1","AL is negative"],1,"If LSB=0, AND result zero, ZF=1."],
+[81,"D","NOT performs:",["Two's complement","One's complement","Addition by 1","Logical shift right"],1,"NOT flips all bits, no +1."],
+[82,"D","NEG performs:",["One's complement only","Two's complement arithmetic negation","Rotate through carry","Bitwise AND"],1,"NEG = invert then add 1."],
+[83,"D","According to Week 9, which instruction does NOT affect flags?",["NEG","NOT","TEST","AND"],1,"NOT does not affect flags; NEG affects several."],
+[84,"D","SHL BL,1 sends the original:",["LSB to CF","MSB to CF","CF to MSB","Zero Flag to LSB"],1,"Left shift moves MSB into CF."],
+[85,"D","SHR BL,1 sends the original:",["MSB to CF","LSB to CF","CF to LSB","Parity flag to MSB"],1,"Right shift moves LSB into CF."],
+[86,"D","The vacant bit inserted by logical SHL is:",["1 at MSB","0 at LSB","CF at LSB","Sign bit at LSB"],1,"Logical left inserts 0 at right."],
+[87,"D","The vacant bit inserted by logical SHR is:",["0 at MSB","1 at MSB","CF at MSB","Old LSB at MSB"],0,"Logical right inserts 0 at left."],
+[88,"D","For the shift/rotate count operand in the course slides, the count must be: [TRAP]",["Any 8-bit register","Only AL","An immediate value or CL","Only DX"],2,"Count restricted to value or CL."],
+[89,"D","Which is valid according to the shown shift-count rule?",["SHL BL,AL","SHL BL,CL","SHL BL,DL","SHL BL,BH"],1,"CL is register for variable counts."],
+[90,"D","How many left shifts are sufficient to force any n-bit register to zero?",["n-1","n","2n","Always 1"],1,"After n shifts all original bits shifted out."],
+[91,"D","A one-bit left shift multiplies an unsigned value by 2 only when: [TRAP]",["Overflow/wraparound is ignored or does not occur","CF is always 1","The operand is a string","CL is zero"],0,"Bit width can discard high bits."],
+[92,"D","ROL differs from SHL because ROL:",["Discards the MSB","Feeds the shifted-out MSB back into the LSB","Always inserts zero","Does not use CF"],1,"ROL circulates MSB to LSB and updates CF."],
+[93,"D","ROR BL,1 places the old LSB into:",["Only CF","MSB and CF","LSB and CF","ZF and CF"],1,"ROR circulates old LSB to MSB and CF."],
+[94,"D","After rotating an n-bit value left exactly n times, the value becomes:",["Zero","All ones","The original value","The two's complement"],2,"Full-width rotation restores pattern."],
+[95,"D","Why is rotation convenient for binary output compared with destructive shifting?",["It can preserve/restore the original value after a full rotation","It never changes CF","It prints ASCII automatically","It does not use loops"],0,"After n rotations original restored, unlike shifts."],
+[96,"D","RCL rotates through:",["Zero Flag","Carry Flag","Stack Pointer","Instruction Pointer"],1,"RCL includes CF as extra bit."],
+[97,"D","The course question about XORing a letter with decimal 32 is based on toggling:",["The ASCII case-related bit","All 8 bits","Only the sign flag","The parity flag"],0,"Upper/lowercase differ by bit 32 (20H)."],
+[98,"D","Binary keyboard input is not directly a binary integer because the input arrives as:",["BCD words","ASCII characters 0 and 1","Hex nibbles only","Raw carry flags"],1,"Binary input treated as character string."],
+[99,"D","In the binary-input algorithm, before inserting each new bit, BX is:",["Shifted left","Shifted right","Rotated right","Negated"],0,"Left shift makes room at LSB."],
+[100,"D","The binary-input loop ends when the program reads:",["Space","Dollar sign","Carriage return","Zero byte"],2,"Algorithm reads until CR."],
+[101,"D","For 16-bit binary output from BX, the slide repeats the output loop:",["4 times","8 times","10 times","16 times"],3,"One bit per rotation, 16 iterations."],
+[102,"D","In binary output using ROL BX, each next bit to print is obtained from:",["ZF","CF","PF","AF"],1,"ROL moves current MSB into CF."],
+[103,"D","For hexadecimal input, the register is shifted left by how many bits per input character?",["1","2","4","8"],2,"Each hex digit = 4 bits."],
+[104,"D","The simplified hex-input slide assumes at most:",["2 hex characters","4 hex characters","8 hex characters","16 hex characters"],1,"No more than four uppercase hex chars."],
+[105,"D","For 16-bit hexadecimal output, the algorithm processes:",["2 nibbles","4 nibbles","8 nibbles","16 nibbles"],1,"16-bit value = four hex nibbles."],
+[106,"E","MUL performs:",["Signed multiplication","Unsigned multiplication","Unsigned division","Signed division"],1,"MUL treats operands as unsigned."],
+[107,"E","IMUL performs:",["Signed multiplication","Unsigned multiplication","Signed division","BCD conversion"],0,"IMUL is signed multiply."],
+[108,"E","For MUL BL, the implicit multiplicand is:",["AH","AL","AX","DX"],1,"8-bit source: AX = AL x source."],
+[109,"E","For MUL BX, the implicit multiplicand is:",["AL","AX","DX","CX"],1,"16-bit source: DX:AX = AX x source."],
+[110,"E","The product of two 8-bit operands is stored in:",["AL only","AX","DX only","DX:AX"],1,"8x8 can produce up to 16 bits in AX."],
+[111,"E","The product of two 16-bit operands is stored in:",["AX only","BX:AX","DX:AX","CX:DX"],2,"16x16 can require 32 bits in DX:AX."],
+[112,"E","After MUL, CF and OF are both 0 when:",["The upper half of the product is zero","The lower half is zero","The result is negative","ZF is one"],0,"Upper half zero means lower holds result."],
+[113,"E","After IMUL, CF and OF are 0 when the upper half is:",["Always zero","A correct sign extension of the lower half","Equal to the divisor","Equal to CF"],1,"Signed result fits in lower half."],
+[114,"E","Which flags are emphasized as meaningful after MUL/IMUL?",["ZF and SF","CF and OF","PF and AF","IF and DF"],1,"Focus on Carry and Overflow."],
+[115,"E","DIV performs:",["Signed division","Unsigned division","Unsigned multiplication","Bitwise division"],1,"DIV is unsigned division."],
+[116,"E","IDIV performs:",["Unsigned division","Signed division","Signed multiplication","Logical right shift"],1,"IDIV is signed division."],
+[117,"E","With an 8-bit divisor, the dividend is:",["AL","AX","DX","DX:AX"],1,"Byte division divides AX by 8-bit source."],
+[118,"E","With an 8-bit divisor, the quotient and remainder are stored in:",["AH quotient, AL remainder","AL quotient, AH remainder","AX quotient, DX remainder","BL quotient, BH remainder"],1,"AL=quotient, AH=remainder."],
+[119,"E","With a 16-bit divisor, the dividend is:",["AX","BX:AX","DX:AX","DS:AX"],2,"Word division uses 32-bit DX:AX."],
+[120,"E","With a 16-bit divisor, quotient and remainder go to:",["AX quotient, DX remainder","DX quotient, AX remainder","AL quotient, AH remainder","BX quotient, CX remainder"],0,"AX=quotient, DX=remainder."],
+[121,"E","Before unsigned byte DIV when the original dividend is only in AL, the slide says to:",["CBW","CWD","MOV AH,0","MOV DX,0"],2,"Zero-extend AL into AX by clearing AH."],
+[122,"E","Before signed byte IDIV when the dividend starts in AL, use:",["MOV AH,0","CBW","CWD","XOR DX,DX"],1,"CBW sign-extends AL into AX."],
+[123,"E","Before unsigned word DIV when the original dividend is in AX, use:",["MOV DX,0","CBW","CWD","MOV AH,0"],0,"Zero-extend AX into DX:AX by clearing DX."],
+[124,"E","Before signed word IDIV when the dividend is in AX, use:",["MOV DX,0","CBW","CWD","NEG DX"],2,"CWD sign-extends AX into DX:AX."],
+[125,"E","CBW and CWD take:",["One immediate operand","One register operand","No explicit operands","Two operands"],2,"Fixed registers, no operands."],
+[126,"E","Flags after DIV/IDIV are:",["All guaranteed zero","Defined like CMP","Undefined","Only ZF defined"],2,"Week 11: flags undefined after division."],
+[127,"E","For decimal input, the running numeric total is updated as:",["total = total + digit","total = 2*total + digit","total = 10*total + digit","total = digit*digit"],2,"Each digit extends by base-10 place."],
+[128,"E","For signed decimal input, the slide tracks a separate sign and applies which instruction at the end for negative input?",["NOT","NEG","ROL","TEST"],1,"After building magnitude, NEG if negative."],
+[129,"E","Decimal output extracts digits by repeatedly dividing by:",["2","8","10","16"],2,"Division by 10 gives decimal remainders."],
+[130,"E","Why are decimal-output remainders pushed onto the stack? [TRAP]",["To sort them","They are generated least-significant first but must print most-significant first","DIV requires stack operands","To set CF"],1,"Stack reverses digit order for printing."],
+[131,"F","The 8086 stack follows:",["FIFO","LIFO","Random access only","Round-robin"],1,"Last-In, First-Out."],
+[132,"F","PUSH SOURCE in the course slide accepts a:",["8-bit byte only","16-bit register or memory word","20-bit physical address only","String only"],1,"16-bit register or memory word."],
+[133,"F","What happens to SP on PUSH?",["SP increases by 1","SP decreases by 1","SP decreases by 2","SP increases by 2"],2,"Push 16-bit word, SP decremented by 2."],
+[134,"F","What happens to SP on POP?",["SP decreases by 2","SP increases by 2","SP becomes zero","SP changes by 1"],1,"Pop word advances SP by 2."],
+[135,"F","The top of the stack is addressed using:",["CS:IP","DS:SI","SS:SP","ES:DI"],2,"SS base + SP offset."],
+[136,"F","PUSH changes the source operand itself:",["Always","Never; it copies the source","Only for AX","Only if CF=1"],1,"Source remains unchanged."],
+[137,"F","POP DEST moves data from:",["DS:SI","SS:SP","CS:IP","ES:BX"],1,"Top of stack moved to destination."],
+[138,"F","Which destination is explicitly excluded for POP in the slide?",["AX","CX","DX","IP"],3,"POP may target 16-bit register except IP."],
+[139,"F","If AX=3, BX=2 and CX=1 are pushed in that order, the first value popped is:",["3","2","1","Undefined"],2,"LIFO returns most recent first."],
+[140,"F","PUSHF and POPF operate on:",["Only AX","Flags","Only CS","Only data variables"],1,"Push/pop flags register."],
+[141,"F","A procedure in the slides is best described as:",["A data segment","A reusable named block of code","A hardware interrupt","A memory model"],1,"Reusable named code blocks called/returned."],
+[142,"F","If PROC type is omitted, the slide says the procedure is assumed:",["FAR","NEAR","INTERRUPT","EXTERN"],1,"NEAR is default."],
+[143,"F","A NEAR procedure is called from:",["A different segment","The same segment","Only ROM","Only the stack segment"],1,"NEAR = same segment."],
+[144,"F","A FAR procedure means the caller is:",["In a different segment","In the same source line","Always in DS","Not allowed to return"],0,"FAR = different segment."],
+[145,"F","CALL name does which two key things in the slides?",["Clears stack and exits","Stores return address on stack and changes IP to procedure","Copies DS to ES and returns","Only sets ZF"],1,"CALL saves return and transfers control."],
+[146,"F","RET returns by:",["Popping the return address into IP","Clearing AX","Jumping to MAIN unconditionally","Restoring DS from DX"],0,"RET gets saved address into IP."],
+[147,"F","Assembly procedures in the slides have built-in parameter lists like C functions:",["Yes, always","No; parameters are arranged by the programmer","Only FAR procedures do","Only MAIN does"],1,"Values via registers or stack."],
+[148,"F","A procedure return value in the later array/procedure slide is commonly communicated through:",["A register such as AX","The source code comment","Only the flag register","The .MODEL directive"],0,"Caller reads result from agreed register."],
+[149,"G","The address assigned to the array variable itself is called the array's:",["Top address","Base address","Carry address","Return address"],1,"Address of array variable = base address."],
+[150,"G","What does 100 DUP(0) mean in GAMMA DW 100 DUP(0)?",["One value 100","100 word elements initialized to zero","100 uninitialized bytes","Duplicate address 100H"],1,"DUP repeats initializer."],
+[151,"G","DELTA DB 212 DUP(?) creates:",["212 initialized words","212 uninitialized bytes","212 zeroed words","A 212-bit register"],1,"DB=bytes, ? = uninitialized."],
+[152,"G","ARRAY DB 5 DUP(?) is analogous to:",["Five initialized words","An uninitialized 5-byte array","One byte with value 5","A 5-bit register"],1,"Five byte elements, no init."],
+[153,"G","LEA SI,ARRAY places into SI:",["arr[0] value","The base/effective address of ARRAY","The length of ARRAY","The final element"],1,"LEA loads address, not value."],
+[154,"G","MOV AL,[SI] means:",["Copy SI itself into AL","Load the byte stored at the memory address pointed to by SI","Store AL into SI register","Increment SI"],1,"Brackets dereference address in SI."],
+[155,"G","For a DB array, moving SI to the next element normally needs:",["INC SI","ADD SI,2","ADD SI,4","DEC SI twice"],0,"Byte = one byte."],
+[156,"G","For a DW array, moving SI to the next element normally needs:",["INC SI","ADD SI,2","ADD SI,4","SHL SI,4"],1,"Word = two bytes."],
+[157,"G","During LOOP-based traversal of 5 array elements, CX is typically initialized to:",["0","1","5","Array base address"],2,"CX = iterations/elements."],
+[158,"G","In register addressing mode, the operand is:",["A constant","A CPU register","A variable address written directly","Always [BX]"],1,"Register mode names register."],
+[159,"G","In immediate addressing mode, the operand is:",["A constant in the instruction","A memory variable","A pointer register only","The stack top"],0,"Constant part of instruction."],
+[160,"G","In direct addressing mode as taught, the operand is specified by:",["A variable/memory location directly","Only a register","The stack pointer only","A literal count only"],0,"Directly refers to memory variable."],
+[161,"G","MOV AX,[SI] is an example of:",["Immediate","Register indirect","Direct register","Based indexed with displacement"],1,"SI holds offset of memory operand."],
+[162,"G","Which registers are allowed for register-indirect memory addressing in the slide?",["AX,CX,DX,SP","BX,SI,DI,BP","CS,DS,SS,ES","AH,AL,BH,BL"],1,"BX, SI, DI and BP."],
+[163,"G","When BP is used for indirect addressing, its default segment is: [TRAP]",["CS","DS","SS","ES"],2,"BP uses SS, others use DS."],
+[164,"G","When SI is used for indirect addressing, its default segment is normally:",["CS","DS","SS","ES"],1,"SI normally uses DS."],
+[165,"G","An addressing mode using BX or BP plus displacement is called:",["Indexed","Based","Immediate","Register only"],1,"Base register = based addressing."],
+[166,"G","An addressing mode using SI or DI plus displacement is called:",["Based","Indexed","Immediate","Stack"],1,"Index register = indexed addressing."],
+[167,"G","[BX+SI] is an example of:",["Based indexed addressing","Immediate addressing","Direct addressing","Only register addressing"],0,"Combines base + index."],
+[168,"G","Which instruction loads the value 100H into AX rather than the memory word at DS:0100H when SI=0100H? [TRAP]",["MOV AX,[SI]","MOV AX,SI","LEA AX,[SI]","POP AX"],1,"Without brackets copies register value."],
+[169,"G","Which mode is especially useful for walking through a one-dimensional array using SI?",["Register indirect/indexed style","Immediate only","Flag mode","Segment mode"],0,"Indirect/indexed used for arrays."],
+[170,"G","Which statement about procedure parameters matches the array/procedure slide?",["They must be declared in parentheses","They may be placed in registers or pushed on the stack","Only AX can be used","Procedures cannot receive values"],1,"Caller/procedure agree on registers/stack."],
+[171,"H1","In the MDA-8086 trainer kit, KIT mode takes:",["Assembly source directly","Machine language","Only C code","Python bytecode"],1,"KIT mode takes machine language."],
+[172,"H1","PC mode is described as taking:",["Only machine code","Assembly or C programming language","Only binary keypad input","Only ROM data"],1,"PC mode accepts assembly or C."],
+[173,"H1","Which keypad key performs a system reset?",["RES","REG","MON","STP"],0,"RES = system reset."],
+[174,"H1","Which keypad key is used to set a memory address?",["AD","DA","GO","MON"],0,"AD = set memory address."],
+[175,"H1","Which keypad key updates segment & offset and inputs data to memory?",["DA","REG","RES","STP"],0,"DA = data/memory update."],
+[176,"H1","Which key is described as register display?",["REG","GO","MON","AD"],0,"REG = Register Display."],
+[177,"H1","Which key executes the user program one single step?",["GO","STP","RES","+"],1,"STP = single step."],
+[178,"H1","Which key can go to the user program or execute monitor functions?",["MON","GO","REG","DA"],1,"GO has that function."],
+[179,"H1","Which key immediately breaks the user program and is associated with a non-maskable interrupt?",["MON","STP","AD","RES"],0,"MON = immediate break / NMI."],
+[180,"H1","The + and - keys are used mainly to:",["Change segment & offset/register display up or down","Toggle LCD cursor","Set CF","Start DOS INT 21H"],0,"Increment/decrement display."],
+[181,"H2","The LCD instruction-register I/O address in the lab manual is:",["00H","02H","04H","1FH"],0,"00H maps to Instruction Register."],
+[182,"H2","The LCD flag/status-register I/O address is:",["00H","02H","04H","18H"],1,"02H maps to flag/status."],
+[183,"H2","The LCD data-register I/O address is:",["00H","02H","04H","1AH"],2,"04H maps to Data Register."],
+[184,"H2","The LCD controller has how many 8-bit registers emphasized in the manual?",["1","2","3","4"],1,"IR and DR."],
+[185,"H2","The Instruction Register (IR) is described as:",["Read-only","Write-only","16-bit","Used only for ASCII data"],1,"IR is write-only for codes/addresses."],
+[186,"H2","The Data Register (DR) stores:",["Only flags","Data to be displayed, using character ASCII values","Only cursor addresses","Stack return addresses"],1,"DR holds ASCII display data."],
+[187,"H2","For a 16x2 LCD, the first line address range is:",["00H-0FH","40H-4FH","80H-8FH","C0H-CFH"],2,"80H-8FH for line 1."],
+[188,"H2","For a 16x2 LCD, the second line address range is:",["10H-1FH","80H-8FH","C0H-CFH","F0H-FFH"],2,"C0H-CFH for line 2."],
+[189,"H2","In the line address, the second hex digit indicates:",["Row number only","Column number 0 through F","Busy state","Interface width"],1,"Second digit = column."],
+[190,"H2","RS=0, R/W=0 selects:",["IR write / internal command operation","Busy flag read","DR write","DR read"],0,"Writes Instruction Register."],
+[191,"H2","RS=0, R/W=1 selects:",["DR write","Busy flag and address counter read","DR read","Display clear write"],1,"Reads BF on DB7 + address counter."],
+[192,"H2","RS=1, R/W=0 selects:",["IR write","Busy read","DR write","DR read"],2,"RS=1 data, R/W=0 write."],
+[193,"H2","RS=1, R/W=1 selects:",["IR write","Busy read","DR write","DR read"],3,"Both high = DR read."],
+[194,"H2","Where does the LCD busy flag appear?",["DB0","DB3","DB7","RS"],2,"BF on DB7 during RS=0 read."],
+[195,"H2","If the busy flag is 1, the next instruction should:",["Be written immediately","Wait until BF becomes 0","Toggle RS twice","Clear DR"],1,"BF=1 means busy, do not send."],
+[196,"H2","Which instruction takes about 1.64 ms in the table?",["Clear display","Entry mode set","Display on/off control","Cursor/display shift"],0,"Clear display = 1.64 ms."],
+[197,"H2","The clear-display command also returns the cursor to:",["Column F","Home position/address 0","Second line","Last DDRAM address"],1,"Clear returns cursor home."],
+[198,"H2","In the LCD bit table, I/D=1 means:",["Decrement cursor","Increment cursor","Display off","Blink on"],1,"I/D=1 increments cursor."],
+[199,"H2","In the LCD bit table, S=0 means:",["Shift display","No display shift","Cursor blink","8-bit interface"],1,"S=0 no display shift."],
+[200,"H2","D=1, C=1, B=1 means the respective features are:",["Display, cursor and blink all on","All off","Only display on","Only blink on"],0,"D,C,B on/off for display,cursor,blink."],
+[201,"H2","S/C=0 means:",["Shift display","Move cursor","8-bit mode","Read DR"],1,"S/C=0 cursor move; 1 display shift."],
+[202,"H2","R/L=1 means:",["Shift left","Shift right","No shift","Read status"],1,"R/L=1 right; 0 left."],
+[203,"H2","DL=1 means:",["4-bit interface","8-bit interface","1-line display","5x10 dots"],1,"DL=1 = 8-bit."],
+[204,"H2","N=1 means:",["One line duty","Two-line / 1/16 duty","5x10 font","Busy"],1,"N=1 = 1/16 duty (2 lines)."],
+[205,"H2","F=1 means:",["5x7 dots","5x10 dots","Display off","Cursor right"],1,"F=1 = 5x10 dots."],
+[206,"H2","BF=0 means:",["Internal operation in progress","Can accept an instruction","Display is off","Data register selected"],1,"BF=0 ready for next instruction."],
+[207,"H3","For the lab 7-segment setup, Port A address is:",["18H","19H","1AH","1BH"],1,"Port A = 19H."],
+[208,"H3","For the four discrete LEDs, Port B address is:",["19H","1AH","1BH","1DH"],2,"Port B = 1BH."],
+[209,"H3","The 7-segment setup Port C address is:",["1BH","1CH","1DH","1EH"],2,"Port C = 1DH."],
+[210,"H3","The control-register address for the 7-segment/LED setup is:",["1CH","1DH","1EH","1FH"],3,"Control = 1FH."],
+[211,"H3","The 7-segment display in the lab is connected as:",["Common cathode","Common anode","Open collector only","Matrix-only"],1,"Lab sheet says common anode."],
+[212,"H3","For the common-anode 7-segment setup, a segment glows when its output bit is:",["0","1","Either always","High impedance only"],0,"0 to glow segment."],
+[213,"H3","Which mapping is correct for segment a?",["PA7","PA3","PA1","PA0"],3,"h g f e d c b a = PA7..PA0, so a=PA0."],
+[214,"H3","Which mapping is correct for segment g?",["PA6","PA5","PA1","PA0"],0,"g = PA6."],
+[215,"H3","Which port drives the four standalone LEDs?",["Port A","Port B","Port C","LCD DR"],1,"Port B used for LED."],
+[216,"H3","The standalone LED connection is:",["Common anode","Common cathode","No common terminal","Series only"],1,"Discrete LEDs common cathode."],
+[217,"H3","For the standalone common-cathode LEDs, a bit value of 1 will:",["Turn the LED on","Turn the LED off","Reset the CPU","Select LCD IR"],0,"1 to glow LEDs."],
+[218,"H3","Which LED is connected to PB2?",["Left upper red","Green","Yellow","Bottom lower red"],2,"PB2 = yellow LED."],
+[219,"H4","For the dot-matrix setup, Port A address is:",["18H","19H","1AH","1CH"],0,"Port A = 18H."],
+[220,"H4","For the dot-matrix setup, Port B address is:",["18H","19H","1AH","1BH"],2,"Port B = 1AH."],
+[221,"H4","For the dot-matrix setup, Port C address is:",["1AH","1BH","1CH","1DH"],2,"Port C = 1CH."],
+[222,"H4","The dot-matrix control-register address is:",["1CH","1DH","1EH","1FH"],2,"Control = 1EH."],
+[223,"H4","In the dot-matrix sheet, Port A is connected to:",["Red LEDs","Green LEDs","Columns","LCD data"],1,"Port A = green LEDs."],
+[224,"H4","In the dot-matrix sheet, Port B is connected to:",["Green LEDs","Red LEDs","Columns","7-segment common pin"],1,"Port B = red LEDs."],
+[225,"H4","In the dot-matrix sheet, Port C is connected to:",["Rows only","Columns","Only red LEDs","LCD RS"],1,"Port C = columns."],
+[226,"H4","Lighting both Port A and Port B LED colors together produces:",["Blue","Orange","White","No light"],1,"Combined color is orange."],
+];
+const LETTERS=["A","B","C","D"];
+let state={}; // id -> {pick, ok}
+try{state=JSON.parse(localStorage.getItem("cse306_state")||"{}")}catch(e){state={}}
+let activeSec="ALL", reviewWrong=false;
+
+function save(){localStorage.setItem("cse306_state",JSON.stringify(state))}
+function secOf(q){return q[1]}
+function updateStats(){
+ let att=0,cor=0;
+ for(const k in state){att++; if(state[k].ok)cor++}
+ const wro=att-cor;
+ document.getElementById("sAtt").textContent=att;
+ document.getElementById("sCor").textContent=cor;
+ document.getElementById("sWro").textContent=wro;
+ document.getElementById("sAcc").textContent=att?Math.round(cor/att*100)+"%":"0%";
+ document.getElementById("sScore").textContent=Math.round(cor/226*100)+"%";
+ document.getElementById("pbar").style.width=(att/226*100)+"%";
+}
+function renderNav(){
+ const nav=document.getElementById("secNav");nav.innerHTML="";
+ const mk=(id,label,count)=>{
+  const b=document.createElement("button");b.className="sec-btn"+(activeSec===id?" active":"");
+  b.innerHTML=label+' <span class="count">('+count+')</span>';
+  b.onclick=()=>{activeSec=id;reviewWrong=false;document.getElementById("btnWrong").classList.remove("active");render();};
+  nav.appendChild(b);
+ };
+ mk("ALL","All",226);
+ SECTIONS.forEach(s=>{mk(s.id,s.id+" • "+(s.range[1]-s.range[0]+1),s.range[1]-s.range[0]+1)});
+}
+function render(){
+ renderNav();updateStats();
+ const list=document.getElementById("list");list.innerHTML="";
+ const qfilter=document.getElementById("search").value.trim().toLowerCase();
+ SECTIONS.forEach(sec=>{
+  if(activeSec!=="ALL"&&activeSec!==sec.id)return;
+  let qs=Q.filter(q=>q[1]===sec.id);
+  if(reviewWrong)qs=qs.filter(q=>state[q[0]]&&!state[q[0]].ok);
+  if(qfilter)qs=qs.filter(q=>(q[2]+" "+q[3].join(" ")).toLowerCase().includes(qfilter));
+  if(!qs.length)return;
+  const block=document.createElement("div");block.className="section-block";
+  let done=0,corr=0;
+  qs.forEach(q=>{if(state[q[0]]){done++;if(state[q[0]].ok)corr++}});
+  block.innerHTML='<div class="section-head"><h2>'+sec.title+'</h2><div class="meta">Q '+sec.range[0]+'–'+sec.range[1]+' • '+corr+'/'+qs.length+' correct • '+done+' attempted <button class="retry" data-rsec="'+sec.id+'">Reset section</button></div></div>';
+  qs.forEach(q=>{
+   const[id,sid,text,opts,ans,exp]=q;
+   const d=document.createElement("div");d.className="q";d.id="q"+id;
+   const st=state[id];
+   let badge="";
+   if(st)badge=st.ok?'<span class="badge ok">✓ Correct</span>':'<span class="badge bad">✗ Wrong — correct: '+LETTERS[ans]+'</span>';
+   d.innerHTML='<span class="q-num">Q '+id+'</span> '+badge+'<div class="q-text">'+text+'</div><div class="opts"></div><div class="explain '+(st?(st.ok?"ok show":"bad show"):"")+'">'+(st?("<b>"+(st.ok?"✓ Correct!":"✗ Wrong. Correct answer: "+LETTERS[ans]+" — "+opts[ans])+"</b>Explanation: "+exp):"")+'</div><div class="q-foot">'+(st?'<button class="retry" data-retry="'+id+'">Retry</button>':"")+'</div>';
+   const box=d.querySelector(".opts");
+   opts.forEach((op,i)=>{
+    const b=document.createElement("button");b.className="opt";
+    b.innerHTML='<span class="k">'+LETTERS[i]+'</span><span>'+op+'</span>';
+    if(st){
+     b.disabled=true;
+     if(i===ans)b.classList.add("correct");
+     else if(i===st.pick&&!st.ok)b.classList.add("wrong");
+     else b.classList.add("dim");
+    }
+    b.onclick=()=>{
+     const ok=(i===ans);
+     state[id]={pick:i,ok};save();render();
+     setTimeout(()=>{const el=document.getElementById("q"+id);if(el)el.scrollIntoView({block:"center",behavior:"smooth"})},50);
+    };
+    box.appendChild(b);
+   });
+   block.appendChild(d);
+  });
+  list.appendChild(block);
+ });
+ list.querySelectorAll("[data-retry]").forEach(b=>b.onclick=(e)=>{e.stopPropagation();delete state[b.getAttribute("data-retry")];save();render()});
+ list.querySelectorAll("[data-rsec]").forEach(b=>b.onclick=(e)=>{e.stopPropagation();const sid=b.getAttribute("data-rsec");Q.filter(q=>q[1]===sid).forEach(q=>delete state[q[0]]);save();render()});
+}
+document.getElementById("search").addEventListener("input",render);
+document.getElementById("btnAll").onclick=()=>{activeSec="ALL";reviewWrong=false;render()};
+document.getElementById("btnWrong").onclick=(e)=>{reviewWrong=!reviewWrong;e.target.classList.toggle("active",reviewWrong);render()};
+document.getElementById("btnReset").onclick=()=>{if(confirm("Reset all 226 answers?")){state={};save();render()}};
+render();
+</script>
+</body>
+</html>
