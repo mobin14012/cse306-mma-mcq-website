@@ -127,17 +127,17 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 
 <script>
 const SECTIONS=[
-{id:"A",title:"A. 8086 Architecture, Registers, Memory & Program Structure",range:[1,25]},
-{id:"B",title:"B. Number Syntax, Variables, Basic Instructions & DOS I/O",range:[26,50]},
-{id:"C",title:"C. Control Flow, CMP, Conditional Jumps & Loops",range:[51,70]},
-{id:"D",title:"D. Logical Ops, Bit Masks, Shift/Rotate & Binary/Hex I/O",range:[71,105]},
-{id:"E",title:"E. MUL/IMUL, DIV/IDIV & Decimal I/O",range:[106,130]},
-{id:"F",title:"F. Stack & Procedures",range:[131,148]},
-{id:"G",title:"G. Arrays & Addressing Modes",range:[149,170]},
-{id:"H1",title:"H1. MDA-8086 Trainer Kit",range:[171,180]},
-{id:"H2",title:"H2. LCD Interface with 8086",range:[181,206]},
-{id:"H3",title:"H3. 7-Segment Display & Discrete LEDs",range:[207,218]},
-{id:"H4",title:"H4. Dot-Matrix Interface",range:[219,226]},
+{id:"A",short:"8086 Architecture & Registers",title:"A. 8086 Architecture, Registers, Memory & Program Structure",range:[1,25]},
+{id:"B",short:"Number Syntax & DOS I/O",title:"B. Number Syntax, Variables, Basic Instructions & DOS I/O",range:[26,50]},
+{id:"C",short:"Control Flow & Loops",title:"C. Control Flow, CMP, Conditional Jumps & Loops",range:[51,70]},
+{id:"D",short:"Logical Ops & Shift/Rotate",title:"D. Logical Ops, Bit Masks, Shift/Rotate & Binary/Hex I/O",range:[71,105]},
+{id:"E",short:"MUL/DIV & Decimal I/O",title:"E. MUL/IMUL, DIV/IDIV & Decimal I/O",range:[106,130]},
+{id:"F",short:"Stack & Procedures",title:"F. Stack & Procedures",range:[131,148]},
+{id:"G",short:"Arrays & Addressing Modes",title:"G. Arrays & Addressing Modes",range:[149,170]},
+{id:"H1",short:"MDA-8086 Trainer Kit",title:"H1. MDA-8086 Trainer Kit",range:[171,180]},
+{id:"H2",short:"LCD Interface",title:"H2. LCD Interface with 8086",range:[181,206]},
+{id:"H3",short:"7-Segment & LEDs",title:"H3. 7-Segment Display & Discrete LEDs",range:[207,218]},
+{id:"H4",short:"Dot-Matrix",title:"H4. Dot-Matrix Interface",range:[219,226]},
 ];
 const Q=[
 [1,"A","The 8086 is described in the slides as a:",["8-bit microprocessor","16-bit microprocessor","20-bit microprocessor","32-bit microprocessor"],1,"It can work on 16 bits at a time."],
@@ -394,7 +394,7 @@ function renderNav(){
   nav.appendChild(b);
  };
  mk("HOME","Topics",226);
- SECTIONS.forEach(s=>{mk(s.id,s.id+" • "+(s.range[1]-s.range[0]+1),s.range[1]-s.range[0]+1)});
+ SECTIONS.forEach(s=>{mk(s.id,s.id+" • "+s.short,s.range[1]-s.range[0]+1)});
 }
 function topicStats(sid){
  let done=0,corr=0,total=0;
