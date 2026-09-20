@@ -62,6 +62,17 @@ button{cursor:pointer;border:none;border-radius:10px;padding:10px 14px;font-size
 .badge.ok{display:inline-block;background:var(--okbg);color:var(--ok);border:1px solid #86efac}
 .badge.bad{display:inline-block;background:var(--badbg);color:var(--bad);border:1px solid #fca5a5}
 footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+.topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:16px}
+.topic-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;text-align:left;display:flex;flex-direction:column;gap:8px;transition:.15s}
+.topic-card:hover{border-color:var(--brand);box-shadow:0 4px 14px rgba(29,78,216,.12);transform:translateY(-1px)}
+.topic-card h3{font-size:14.5px}
+.topic-card .tmeta{font-size:12px;color:var(--muted);font-weight:600}
+.topic-card .tbar{height:7px;background:#e2e8f0;border-radius:999px;overflow:hidden}
+.topic-card .tbar>div{height:100%;background:linear-gradient(90deg,#22c55e,#16a34a);width:0%}
+.topic-card .tfoot{display:flex;justify-content:space-between;align-items:center;margin-top:4px}
+.topic-card .tscore{font-size:12px;font-weight:800;color:var(--brand)}
+.backbtn{font-size:12px;padding:7px 12px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px}
+.backbtn:hover{background:rgba(255,255,255,.28)}
 .hidden{display:none!important}
 </style>
 </head>
@@ -102,7 +113,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 <div class="controls">
 <div class="searchrow">
 <input type="text" id="search" placeholder="Search questions… e.g. MUL, LCD, stack, physical address">
-<button class="btn" id="btnAll">All Sections</button>
+<button class="btn" id="btnHome">Topics</button>
 <button class="btn-ghost" id="btnWrong">Review Wrong</button>
 <button class="btn-ghost" id="btnReset">Reset All</button>
 </div>
@@ -359,7 +370,7 @@ const Q=[
 const LETTERS=["A","B","C","D"];
 let state={}; // id -> {pick, ok}
 try{state=JSON.parse(localStorage.getItem("cse306_state")||"{}")}catch(e){state={}}
-let activeSec="ALL", reviewWrong=false;
+let activeSec="HOME", reviewWrong=false;
 
 function save(){localStorage.setItem("cse306_state",JSON.stringify(state))}
 function secOf(q){return q[1]}
@@ -382,15 +393,33 @@ function renderNav(){
   b.onclick=()=>{activeSec=id;reviewWrong=false;document.getElementById("btnWrong").classList.remove("active");render();};
   nav.appendChild(b);
  };
- mk("ALL","All",226);
+ mk("HOME","Topics",226);
  SECTIONS.forEach(s=>{mk(s.id,s.id+" • "+(s.range[1]-s.range[0]+1),s.range[1]-s.range[0]+1)});
+}
+function topicStats(sid){
+ let done=0,corr=0,total=0;
+ Q.filter(q=>q[1]===sid).forEach(q=>{total++;if(state[q[0]]){done++;if(state[q[0]].ok)corr++}});
+ return {done,corr,total};
+}
+function renderHome(list){
+ const grid=document.createElement("div");grid.className="topic-grid";
+ SECTIONS.forEach(sec=>{
+  const st=topicStats(sec.id);
+  const pct=st.total?Math.round(st.done/st.total*100):0;
+  const card=document.createElement("button");card.className="topic-card";
+  card.innerHTML='<h3>'+sec.title+'</h3><div class="tmeta">Questions '+sec.range[0]+'–'+sec.range[1]+' • '+st.total+' MCQs</div><div class="tbar"><div style="width:'+pct+'%"></div></div><div class="tfoot"><span class="tscore">'+st.corr+'/'+st.total+' correct • '+st.done+' done</span><span class="btn" style="padding:7px 12px">Open →</span></div>';
+  card.onclick=()=>{activeSec=sec.id;reviewWrong=false;document.getElementById("btnWrong").classList.remove("active");document.getElementById("search").value="";render();window.scrollTo({top:0,behavior:"smooth"})};
+  grid.appendChild(card);
+ });
+ list.appendChild(grid);
 }
 function render(){
  renderNav();updateStats();
  const list=document.getElementById("list");list.innerHTML="";
  const qfilter=document.getElementById("search").value.trim().toLowerCase();
+ if(activeSec==="HOME"){renderHome(list);return}
  SECTIONS.forEach(sec=>{
-  if(activeSec!=="ALL"&&activeSec!==sec.id)return;
+  if(activeSec!==sec.id)return;
   let qs=Q.filter(q=>q[1]===sec.id);
   if(reviewWrong)qs=qs.filter(q=>state[q[0]]&&!state[q[0]].ok);
   if(qfilter)qs=qs.filter(q=>(q[2]+" "+q[3].join(" ")).toLowerCase().includes(qfilter));
@@ -398,7 +427,7 @@ function render(){
   const block=document.createElement("div");block.className="section-block";
   let done=0,corr=0;
   qs.forEach(q=>{if(state[q[0]]){done++;if(state[q[0]].ok)corr++}});
-  block.innerHTML='<div class="section-head"><h2>'+sec.title+'</h2><div class="meta">Q '+sec.range[0]+'–'+sec.range[1]+' • '+corr+'/'+qs.length+' correct • '+done+' attempted <button class="retry" data-rsec="'+sec.id+'">Reset section</button></div></div>';
+  block.innerHTML='<div class="section-head"><h2>'+sec.title+'</h2><div class="meta">Q '+sec.range[0]+'–'+sec.range[1]+' • '+corr+'/'+qs.length+' correct • '+done+' attempted <button class="backbtn" data-back="1">← Topics</button> <button class="retry" data-rsec="'+sec.id+'">Reset topic</button></div></div>';
   qs.forEach(q=>{
    const[id,sid,text,opts,ans,exp]=q;
    const d=document.createElement("div");d.className="q";d.id="q"+id;
@@ -427,11 +456,12 @@ function render(){
   });
   list.appendChild(block);
  });
+ list.querySelectorAll("[data-back]").forEach(b=>b.onclick=()=>{activeSec="HOME";reviewWrong=false;document.getElementById("btnWrong").classList.remove("active");document.getElementById("search").value="";render();window.scrollTo({top:0,behavior:"smooth"})});
  list.querySelectorAll("[data-retry]").forEach(b=>b.onclick=(e)=>{e.stopPropagation();delete state[b.getAttribute("data-retry")];save();render()});
  list.querySelectorAll("[data-rsec]").forEach(b=>b.onclick=(e)=>{e.stopPropagation();const sid=b.getAttribute("data-rsec");Q.filter(q=>q[1]===sid).forEach(q=>delete state[q[0]]);save();render()});
 }
 document.getElementById("search").addEventListener("input",render);
-document.getElementById("btnAll").onclick=()=>{activeSec="ALL";reviewWrong=false;render()};
+document.getElementById("btnHome").onclick=()=>{activeSec="HOME";reviewWrong=false;document.getElementById("btnWrong").classList.remove("active");render()};
 document.getElementById("btnWrong").onclick=(e)=>{reviewWrong=!reviewWrong;e.target.classList.toggle("active",reviewWrong);render()};
 document.getElementById("btnReset").onclick=()=>{if(confirm("Reset all 226 answers?")){state={};save();render()}};
 render();
